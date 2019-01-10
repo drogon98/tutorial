@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+<head>
+    {% block head %}
+    <title>Logout</title>
+    {% endblock %}
+</head>
+<body>
+    {% block body %}
+        <div class="container">
+            <h1>Logout</h1>
+            <p>You can login again here </p>
+            <a href="{% url 'login' %}">Login</a>
+        </div>
+    {% endblock %}
+</body>

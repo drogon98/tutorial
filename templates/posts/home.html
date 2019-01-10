@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        {% block head %}
+        <title>Home Page</title>
+        {% endblock %}
+    </head>
+    <body>
+      {% block body %}
+      <div class="container">
+        <div class="col-md-8">
+            <h1>Posts</h1>
+            <form  method="post">
+              {% csrf_token %}
+              {{ form.post }}
+              <br/>
+              <button type="submit">Post</button>
+            </form>
+            <h2>My posts</h2>
+            {% for item in post %}
+              <p><b>{{ item }}</b></p>
+              <p>It was posted by: {{ item.user.get_full_name }}</p>
+              <p>Date posted:{{ item.created }}</p>
+              <br/>
+            {% endfor %}
+        </div>
+        <div class="col-md-4">
+          <h1>Other people</h1>
+          {% for user in users %}
+          {% if not user in friends %}
+          <a href="{% url 'accounts:profile_with_pk' pk=user.pk %}"><b>{{ user.username }}</b></a><br/>
+          <a href="{% url 'posts:change_friend' operation='add' pk=user.pk %}">
+            <button type="button" class="btn btn-success">Add friend</button><br/>
+          </a>
+          {% endif %}
+          {% endfor %}
+          <h1>Friends</h1>
+          {% for friend in friends %}
+          <a href="{% url 'accounts:profile_with_pk' pk=friend.pk %}"><b>{{ friend.username }}</b></a><br/>
+          <a href="{% url 'posts:change_friend' operation='remove' pk=friend.pk %}">
+          <button type="button" class="btn btn-default">Remove friend</button><br/>
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+      {% endblock %}
+    </body>
+</html>
